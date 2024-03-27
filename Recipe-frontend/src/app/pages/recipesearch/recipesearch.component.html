@@ -1,0 +1,22 @@
+<p>recipesearch works!</p>
+<!-- 
+<label for="foodType">Food: </label>
+<input id="foodType" type="text"> -->
+
+<button (click)="searchRecipe()">Get recipes</button>
+
+@for (recipe of recipes; track recipe) {
+    <article>
+        <h3 class="text-3xl font-bold underline">{{ recipe.label }}</h3>
+        <img src="{{ recipe.image }}" alt="Recipe image">
+        <p>{{ recipe.totalTime }}</p>
+        <p>{{ recipe.self }}</p>
+        <ul>
+            @for (ingredientLine of recipe.ingredientLines; track ingredientLine) {
+            <li>{{ ingredientLine }}</li>
+            }
+        </ul>
+    </article>
+} @empty {
+    <p>There are no recipes...</p>
+}

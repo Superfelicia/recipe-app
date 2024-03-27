@@ -1,4 +1,17 @@
 <h1>Hello, {{ name }}</h1>
 <p>Congratulations! Your app, {{ title }}, is running. 🎉</p>
 
+<nav>
+  <ul>
+    <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
+    <li><a routerLink="/recipes" routerLinkActive="active" ariaCurrentWhenActive="page">Recipes</a></li>
+    <li><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe search</a></li>
+    <li><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
+    <!-- @if((loggedIn$ | async)) -->
+  </ul>
+</nav>
+
+<button (click)="login()">Login</button>
+<button (click)="logout()">Logout</button>
+
 <router-outlet />
