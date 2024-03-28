@@ -53,8 +53,8 @@ export class AuthService {
     this.loggedIn.next(loginState);
   }
 
-  loginUser(loginDeatils: LoginDetails) {
-    this.http.post<ResultData>(this.baseUrl+'login', loginDeatils, this.httpOptions).pipe(
+  loginUser(loginDetails: LoginDetails) {
+    this.http.post<ResultData>(this.baseUrl+'login', loginDetails, this.httpOptions).pipe(
       catchError(this.handleError)).subscribe(result => {
         console.log(result);
         this.updateLoginState(true);

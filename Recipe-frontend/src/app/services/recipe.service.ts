@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +20,9 @@ export class RecipeService {
 
   constructor(private http: HttpClient) { }
 
-  public getRecipes(searchterm: string): Observable<any[]> {
-    let quisineType = "American";
-    let mealType = "Breakfast";
-    let url = this.baseUrl + "&q=" + searchterm + "&app_id=" + this.app_id + "&app_key=" + this.app_key + "&cuisineType=" + quisineType + "&mealType=" + mealType;
+  getRecipes(searchterm = "Chicken", cuisineType = "British", mealType = "Dinner"): Observable<any> {
+    let url = this.baseUrl + "&q=" + searchterm + "&app_id=" + this.app_id + "&app_key=" + this.app_key + "&cuisineType=" + cuisineType + "&mealType=" + mealType;
     
-    return this.http.get<any[]>(url, this.httpOptions);
+    return this.http.get<any>(url, this.httpOptions);
   }
 }
