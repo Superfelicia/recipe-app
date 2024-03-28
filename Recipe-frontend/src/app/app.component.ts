@@ -5,6 +5,7 @@ import { LoginDetails } from './interfaces/login-details';
 import { AuthService } from './services/auth.service';
 import { User } from './interfaces/user';
 import { Observable } from 'rxjs';
+import { LoggedInUser } from './interfaces/loggedinuser';
 
 @Component({
   selector: 'app-root',
@@ -21,18 +22,12 @@ export class AppComponent {
 
   loginDetails: LoginDetails;
 
-  loggedIn$: Observable<boolean>;
+  loggedIn$: Observable<LoggedInUser>;
 
   constructor(private auth: AuthService) {
     this.loginDetails = {
       email:"fell@fell.fell",
       password:"fellfellfell"
-    }
-
-    this.user = {
-      id: 11,
-      name: "Fell",
-      email: "fell@fell.fell"
     }
 
     this.loggedIn$ = this.auth.loggedIn$;

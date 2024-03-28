@@ -4,10 +4,14 @@
 <nav>
   <ul>
     <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
-    <li><a routerLink="/recipe" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe</a></li>
+    <li><a routerLink="/recipe/:id" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe</a></li>
     <li><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe search</a></li>
     <li><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
-    <!-- @if((loggedIn$ | async)) -->
+    @if((loggedIn$ | async)?.loginState) {
+      <li>Logged in as {{ (loggedIn$ | async)?.user?.name }}</li>
+    } @else {
+      <li>Not logged in</li>
+    }
   </ul>
 </nav>
 

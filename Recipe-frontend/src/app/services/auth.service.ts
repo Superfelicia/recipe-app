@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { LoginDetails } from '../interfaces/login-details';
-import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, throwError } from 'rxjs';
 import { User } from '../interfaces/user';
+import { LoggedInUser } from '../interfaces/loggedinuser';
 
-interface ResultData {
-  token: string
-}
-
-// interface LoggedInUser {
-//   user: User,
-//   loginState: boolean,
-// }
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +16,11 @@ export class AuthService {
 
   // private loggedIn = new BehaviorSubject<LoggedInUser>({user: undefined, loginState: false});
 
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  private loggedIn = new BehaviorSubject<LoggedInUser>({
+    user: undefined,
+    loginState: false,
+  });
+
   loggedIn$ = this.loggedIn.asObservable();
 
   // vi kan istället skapa ett interface som har typer och värden vi kan använda
@@ -44,51 +41,58 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  // hämtar senaste värdet från behaviorSubject
-  getLoginStatus() {
-    return this.loggedIn.value;
-  }
 
-  private updateLoginState(loginState: boolean) {
+  updateLoginState(loginState: LoggedInUser) {
     this.loggedIn.next(loginState);
   }
 
+  // hämtar senaste värdet från behaviorSubject
+  getLoginStatus() {
+    return this.loggedIn.value.loginState;
+  }
+
   loginUser(loginDetails: LoginDetails) {
-    this.http.post<ResultData>(this.baseUrl+'login', loginDetails, this.httpOptions).pipe(
+    this.http.post<any>(this.baseUrl+'login', loginDetails, this.httpOptions).pipe(
       catchError(this.handleError)).subscribe(result => {
         console.log(result);
-        this.updateLoginState(true);
+        this.updateLoginState({
+          user: result.user,
+          loginState: true,
+        });
         // om result så tar vi det, som i det här fallet är token,
         // och sparar det i localStorage
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer " + result.token);
-      })
+      });
   }
 
   logOut() {
-    this.http.post<ResultData>(this.baseUrl+'logout', {}, this.httpOptions).pipe(
+    this.http.post<any>(this.baseUrl+'logout', {}, this.httpOptions).pipe(
       catchError(this.handleError)).subscribe(result => {
         console.log(result);
-        this.updateLoginState(false);
+        this.updateLoginState({
+          user: result.user,
+          loginState: false,
+        });
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer ");
       })
   }
 
-
-  // getCurrentUser() {
-  //   let user: User;
-  //   user = {
-  //     id: 0,
-  //     name: "",
-  //     email: "",
-  //   }
-  //   this.http.get<User[]>(this.baseUrl+'getUser/' + this.loggedIn.value.user?.id, this.httpOptions).subscribe(res => user = res[0]);
-  //   return user;
-  // }
-
-  public getUser2(): Observable<User[]> {
-    // vi tar vår httpOptions.headers och sätter den till Auth bearer tokenet
-    return this.http.get<User[]>(this.baseUrl+'getuser/2', this.httpOptions);
+  getCurrentUser() {
+    let user: User;
+    user = {
+      id: 0,
+      name: '',
+      email: '',
+      created_at: '',
+    }
+    this.http.get<User[]>(this.baseUrl + 'getUser/' + this.loggedIn.value.user?.id, this.httpOptions).subscribe((res) => (user = res[0]));
+    return user;
   }
+
+  // public getUser2(): Observable<User[]> {
+  //   // vi tar vår httpOptions.headers och sätter den till Auth bearer tokenet
+  //   return this.http.get<User[]>(this.baseUrl+'getuser/2', this.httpOptions);
+  // }
 
   handleError(error: HttpErrorResponse) {
     if (error.status === 404) {

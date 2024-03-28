@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { LoginDetails } from '../../interfaces/login-details';
 import { User } from '../../interfaces/user';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -17,16 +15,14 @@ export class ProfileComponent {
 
   constructor(private auth: AuthService) {
     this.user = {
-      id: -1,
+      id: 0,
       name: "",
-      email: ""
+      email: "",
+      created_at: "",
     }
   }
 
   getUser() {
-    this.auth.getUser2().subscribe(res => {
-      console.log(res[0]);
-      this.user = res[0];
-    })
+    this.auth.getCurrentUser();
   }
 }
