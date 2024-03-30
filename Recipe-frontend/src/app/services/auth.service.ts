@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { LoginDetails } from '../interfaces/login-details';
-import { BehaviorSubject, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, catchError, throwError, map } from 'rxjs';
 import { User } from '../interfaces/user';
 import { LoggedInUser } from '../interfaces/loggedinuser';
 
@@ -77,16 +77,18 @@ export class AuthService {
       })
   }
 
-  getCurrentUser() {
-    let user: User;
-    user = {
-      id: 0,
-      name: '',
-      email: '',
-      created_at: '',
+  getCurrentUser(): Observable<User> {
+    if (!this.loggedIn.value.user) {
+      return EMPTY;
     }
-    this.http.get<User[]>(this.baseUrl + 'getUser/' + this.loggedIn.value.user?.id, this.httpOptions).subscribe((res) => (user = res[0]));
-    return user;
+
+    return this.http.get<User[]>(this.baseUrl + 'getuser/' + this.loggedIn.value.user?.id, this.httpOptions)
+    .pipe(
+      map(users => users[0]),
+      catchError(this.handleError)
+    );
+    // this.http.get<User[]>(this.baseUrl + 'getUser/' + this.loggedIn.value.user?.id, this.httpOptions).subscribe((res) => (user = res[0]));
+    // return user;
   }
 
   handleError(error: HttpErrorResponse) {
