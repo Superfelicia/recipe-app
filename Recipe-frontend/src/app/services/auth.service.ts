@@ -89,11 +89,6 @@ export class AuthService {
     return user;
   }
 
-  // public getUser2(): Observable<User[]> {
-  //   // vi tar vår httpOptions.headers och sätter den till Auth bearer tokenet
-  //   return this.http.get<User[]>(this.baseUrl+'getuser/2', this.httpOptions);
-  // }
-
   handleError(error: HttpErrorResponse) {
     if (error.status === 404) {
       console.error('An error occurred:', error.error);

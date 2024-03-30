@@ -1,3 +1,12 @@
 <p>recipe works!</p>
 
-<p>{{id}}</p>
+<div *ngIf="recipe" recipe="recipe">
+    <h2>{{ recipe.recipe.label }}</h2>
+    <img src="{{ recipe.recipe.image }}" alt="Recipe image">
+    <p>{{ recipe.recipe.totalTime }}</p>
+    @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
+        <li>{{ ingredientLine }}</li>
+        }
+</div>
+
+<p *ngIf="!recipe">Loading recipe...</p>

@@ -10,6 +10,11 @@
         <img src="{{ recipe.image }}" alt="Recipe image">
         <p>{{ recipe.totalTime }}</p>
         <ul>
+            <p>
+                <a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">
+                    Read recipe...
+                </a>
+            </p>
             @for (ingredientLine of recipe.ingredientLines; track ingredientLine) {
             <li>{{ ingredientLine }}</li>
             }
