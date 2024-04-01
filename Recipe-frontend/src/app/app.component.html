@@ -1,9 +1,7 @@
-<h1>Hello, {{ name }}</h1>
-<p>Congratulations! Your app, {{ title }}, is running. 🎉</p>
-
 <nav>
-  <ul>
+  <ul class="flex flex-row justify-between">
     <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
+    <li><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
     <li><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe search</a></li>
     <li><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
     @if((loggedIn$ | async)?.loginState) {
@@ -13,8 +11,5 @@
     }
   </ul>
 </nav>
-
-<button (click)="login()">Login</button>
-<button (click)="logout()">Logout</button>
 
 <router-outlet />

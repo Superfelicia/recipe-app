@@ -2,7 +2,7 @@
 
 <div *ngIf="recipe" recipe="recipe">
     <h2>{{ recipe.recipe.label }}</h2>
-    <img src="{{ recipe.recipe.image }}" alt="Recipe image">
+    <img src="{{ recipe.recipe.images.SMALL.url }}" alt="Recipe image">
     <p>{{ recipe.recipe.totalTime }}</p>
     @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
         <li>{{ ingredientLine }}</li>

@@ -2,9 +2,10 @@
 
 <div *ngIf="currentUser$ | async as currentUser; else loading">
     <p>{{ currentUser.name }}</p>
+    <p>{{ currentUser.email }}</p>
+    <p>{{ currentUser.id }}</p>
 </div>
 
 <ng-template #loading>
     <p>Loading...</p>
 </ng-template>
-
