@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { LoginDetails } from '../interfaces/login-details';
+import { Registerdetails } from '../interfaces/registerdetails';
 import { BehaviorSubject, EMPTY, Observable, catchError, throwError, map } from 'rxjs';
 import { User } from '../interfaces/user';
 import { LoggedInUser } from '../interfaces/loggedinuser';
+import { RegisteredUser } from '../interfaces/registered-user';
 
 
 @Injectable({
@@ -15,6 +17,13 @@ export class AuthService {
   // t.ex. interface LoggedInUser
 
   // private loggedIn = new BehaviorSubject<LoggedInUser>({user: undefined, loginState: false});
+
+  private registered = new BehaviorSubject<RegisteredUser>({
+    user: undefined,
+    registeredState: false,
+  });
+
+  registered$ = this.registered.asObservable();
 
   private loggedIn = new BehaviorSubject<LoggedInUser>({
     user: undefined,
@@ -41,6 +50,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  registeredUser(registeredState: RegisteredUser) {
+    this.registered.next(registeredState);
+  }
+
+  registerNewUser(registerDetails: Registerdetails) {
+    this.http.post<any>(this.baseUrl+'register', registerDetails, this.httpOptions).pipe(
+      catchError(this.handleError)).subscribe(result => {
+        console.log(result);
+        this.registeredUser({
+          user: result.user,
+          registeredState: true,
+        });
+
+        this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer " + result.token);
+      });
+  }
 
   updateLoginState(loginState: LoggedInUser) {
     this.loggedIn.next(loginState);

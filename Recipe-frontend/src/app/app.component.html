@@ -2,6 +2,7 @@
   <ul class="flex flex-row justify-between">
     <li><a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
     <li><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></li>
+    <li><a routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</a></li>
     <li><a routerLink="/search" routerLinkActive="active" ariaCurrentWhenActive="page">Recipe search</a></li>
     <li><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
     @if((loggedIn$ | async)?.loginState) {

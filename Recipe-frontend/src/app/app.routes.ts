@@ -5,6 +5,7 @@ import { RecipesearchComponent } from './pages/recipesearch/recipesearch.compone
 import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -12,4 +13,5 @@ export const routes: Routes = [
     {path: 'search', component: RecipesearchComponent},
     {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
     {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegisterComponent},
 ];
