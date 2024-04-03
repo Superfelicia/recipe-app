@@ -50,7 +50,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  registeredUser(registeredState: RegisteredUser) {
+  registeredUserState(registeredState: RegisteredUser) {
     this.registered.next(registeredState);
   }
 
@@ -58,7 +58,7 @@ export class AuthService {
     this.http.post<any>(this.baseUrl+'register', registerDetails, this.httpOptions).pipe(
       catchError(this.handleError)).subscribe(result => {
         console.log(result);
-        this.registeredUser({
+        this.registeredUserState({
           user: result.user,
           registeredState: true,
         });
@@ -99,7 +99,7 @@ export class AuthService {
           loginState: false,
         });
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer ");
-      })
+      });
   }
 
   getCurrentUser(): Observable<User> {

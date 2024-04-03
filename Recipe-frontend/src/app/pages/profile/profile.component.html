@@ -1,11 +1,11 @@
 <p>profile works!</p>
 
-<div *ngIf="currentUser$ | async as currentUser; else loading">
+@if (currentUser$ | async; as currentUser) {
+    <div>
     <p>{{ currentUser.name }}</p>
     <p>{{ currentUser.email }}</p>
     <p>{{ currentUser.id }}</p>
 </div>
-
-<ng-template #loading>
+} @else {
     <p>Loading...</p>
-</ng-template>
+}
