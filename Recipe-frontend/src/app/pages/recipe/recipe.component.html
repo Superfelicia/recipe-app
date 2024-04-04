@@ -2,13 +2,14 @@
 
 @if (recipe) {
     <div>
-    <h2>{{ recipe.recipe.label }}</h2>
-    <img src="{{ recipe.recipe.images.SMALL.url }}" alt="Recipe image">
-    <p>{{ recipe.recipe.totalTime }}</p>
-    @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
-        <li>{{ ingredientLine }}</li>
+        <h2>{{ recipe.recipe.label }}</h2>
+        <img src="{{ recipe.recipe.images.SMALL.url }}" alt="Recipe image">
+        <p>{{ recipe.recipe.totalTime }}</p>
+        <p>{{ recipe.recipe.healthLabels }}</p>
+        @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
+            <li>{{ ingredientLine }}</li>
         }
-</div>
+    </div>
 } @else {
 <p>Loading recipe...</p>
 }

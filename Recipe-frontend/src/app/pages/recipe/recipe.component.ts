@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-recipe',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './recipe.component.html',
   styleUrl: './recipe.component.scss'
 })

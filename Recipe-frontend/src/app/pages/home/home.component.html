@@ -1,1 +1,28 @@
 <p>home works!</p>
+
+<button (click)="navigateToSearch()">SÖK</button>
+<app-recipesearch></app-recipesearch>
+
+
+<!-- @if (recipes | async; as recipes) { -->
+    @for (recipe of recipes; track recipe) {
+    <article>
+        <h3 class="text-3xl font-bold underline">{{ recipe.label }}</h3>
+        <img src="{{ recipe.image }}" alt="Recipe image">
+        <p>{{ recipe.totalTime }}</p>
+        <p>{{ recipe.healthLabels }}</p>
+        <ul>
+            <p>
+                <a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">
+                    Read recipe...
+                </a>
+            </p>
+            @for (ingredientLine of recipe.ingredientLines; track ingredientLine) {
+            <li>{{ ingredientLine }}</li>
+            }
+        </ul>
+    </article>
+} @empty {
+    <p>There are no recipes...</p>
+}
+<!-- } -->
