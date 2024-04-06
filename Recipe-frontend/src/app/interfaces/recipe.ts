@@ -4,7 +4,7 @@ export interface Recipe {
     "ingredientLines": string,
     "totalTime": number,
     "selfref": string,
-    "healthLabels": string,
-    "cuisineType": string,
-    "mealType": string,
+    "mealType": string[],
+    "cuisineType": string[],
+    "healthLabels": string[],
 }

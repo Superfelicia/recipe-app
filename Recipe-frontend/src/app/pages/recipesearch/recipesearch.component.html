@@ -1,9 +1,44 @@
 <p>recipesearch works!</p>
 
-<input class="border-2" type="text" [(ngModel)]="searchterm" placeholder="Search">
-<input class="border-2" type="text" [(ngModel)]="mealType" placeholder="Type of meal">
+<input class="border-2" type="text" [ngModel]="searchterm" placeholder="Search">
+<!-- <input class="border-2" type="text" [(ngModel)]="mealType" placeholder="Type of meal">
 <input class="border-2" type="text" [(ngModel)]="cuisineType" placeholder="Cuisine">
-<input class="border-2" type="text" [(ngModel)]="healthLabel" placeholder="Allergies">
+<input class="border-2" type="text" [(ngModel)]="healthLabel" placeholder="Allergies"> -->
+<div>
+    <label for="mealType">Meal type:</label>
+    <ul>
+        @for (type of mealTypes; track type) {
+            <li>
+                <input type="checkbox" [value]="type" [checked]="selectedMealTypes.includes(type)" (change)="toggleMealType($event)"> 
+                {{ type }}
+            </li>
+        }
+    </ul>
+</div>
+
+<div>
+    <label for="cuisineType">Cuisine type:</label>
+    <ul>
+        @for (type of cuisineTypes; track type) {
+            <li>
+                <input type="checkbox" [value]="type" [checked]="selectedCuisineTypes.includes(type)" (change)="toggleCuisineType($event)"> 
+                {{ type }}
+            </li>
+        }
+    </ul>
+</div>
+
+<div>
+    <label for="healthLabel">Allergies:</label>
+    <ul>
+        @for (label of healthLabels; track label) {
+            <li>
+                <input type="checkbox" [value]="label" [checked]="selectedHealthLabels.includes(label)" (change)="toggleHealthLabel($event)"> 
+                {{ label }}
+            </li>
+        }
+    </ul>
+</div>
 
 <button (click)="searchRecipe()">Get recipes</button>
 
@@ -13,7 +48,6 @@
         <h3 class="text-3xl font-bold underline">{{ recipe.label }}</h3>
         <img src="{{ recipe.image }}" alt="Recipe image">
         <p>{{ recipe.totalTime }}</p>
-        <p>{{ recipe.healthLabels }}</p>
         <ul>
             <p>
                 <a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, throwError, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +26,36 @@ export class RecipeService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  getRecipes(searchterm = "chicken", cuisineType = "british", mealType = "dinner", health = "dairy-free"): Observable<any> {
-    let url = this.baseUrl + "&q=" + searchterm + "&app_id=" + this.app_id + "&app_key=" + this.app_key + "&cuisineType=" + cuisineType + "&mealType=" + mealType + "&health=" + health;
+  getRecipes(searchterm: string, mealType: string, cuisineType: string, healthLabels: string[]): Observable<any> {
+    let url = this.baseUrl + "&app_id=" + this.app_id + "&app_key=" + this.app_key;
     
-    return this.http.get<any>(url, this.httpOptions);
+    let queryParams = '';
+
+    if (searchterm) {
+      queryParams += `$q=${encodeURI(searchterm)}`;
+    }
+    if (mealType) {
+      queryParams += `&mealType=${encodeURI(mealType)}`;
+    }
+    if (cuisineType) {
+      queryParams += `&cuisineType=${encodeURI(cuisineType)}`;
+    }
+    if (healthLabels && healthLabels.length > 0) {
+      const encodedHealthLabels = healthLabels.map(label => encodeURI(label));
+      queryParams += `&health=${encodedHealthLabels.join(',')}`;
+    }
+
+    return this.http.get<any>(`${url}${queryParams}`, this.httpOptions);
   }
 
   getRecipe(recipeId: string): Observable<any> {
     let recipeUrl = `https://api.edamam.com/api/recipes/v2/`;
     let url = `${recipeUrl}${recipeId}?type=public&app_id=${this.app_id}&app_key=${this.app_key}`;
     return this.http.get<any>(url, this.httpOptions);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('An error occurred:', error);
+    return throwError(() => new Error('Something bad happened: please try again later.'))
   }
 }
