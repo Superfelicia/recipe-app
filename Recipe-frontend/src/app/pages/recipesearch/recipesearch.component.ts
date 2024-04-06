@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Recipe } from '../../interfaces/recipe';
 import { RecipeService } from '../../services/recipe.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RecipeidformatterPipe } from '../../pipes/recipeidformatter.pipe';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-recipesearch',
   standalone: true,
-  imports: [FormsModule, RouterLink, RecipeidformatterPipe],
+  imports: [FormsModule, RouterLink, RecipeidformatterPipe, CommonModule],
   templateUrl: './recipesearch.component.html',
   styleUrl: './recipesearch.component.scss',
 })
 export class RecipesearchComponent implements OnInit {
   recipes: Recipe[] = [];
   filteredRecipes?: Recipe[];
+
+  searchterm: string = '';
 
   mealTypes: string[] = ['breakfast', 'brunch', 'lunch/dinner', 'snack', 'teatime'];
   cuisineTypes: string[] = ["italian", "mexican", "indian", "chinese", 'british', 'greek', 'eastern europe', 'mediterranean'];
@@ -23,17 +26,7 @@ export class RecipesearchComponent implements OnInit {
   selectedCuisineTypes: string[] = [];
   selectedHealthLabels: string[] = [];
 
-  // cuisineTypes?: string[];
-  // selectedCuisineType: string[] = [];
-  // healthLabels?: string[];
-
-  searchterm: string = '';
-  cuisineType: string = '';
-  mealType: string = '';
-  healthLabel: string[] = [];
-
-  searchButton: boolean = true;
-
+  isDropdownOpen: boolean = false;
 
   constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
 
@@ -43,6 +36,41 @@ export class RecipesearchComponent implements OnInit {
         this.searchRecipe();
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const menuButton = document.getElementById('menu-button');
+
+    if (menuButton?.contains(event.target as Node) && !this.isDropdownOpen) {
+      this.toggleDropdown(event);
+    }
+
+    if (!dropdownMenu?.contains(event.target as Node) && this.isDropdownOpen) {
+      this.closeDropdown();
+    }
+
+    // if (dropdownMenu?.contains(event.target as Node)) {
+    //   event.stopPropagation();
+    //   this.isClickInsideDropdown(dropdownMenu);
+    // }
+  }
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    console.log('Klickar på dropdown');
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
+  isClickInsideDropdown(target: HTMLElement): boolean {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    // console.log('klickar inuti dropdown');
+    return !!dropdownMenu && dropdownMenu.contains(target);
   }
 
   toggleMealType(event: any): void {

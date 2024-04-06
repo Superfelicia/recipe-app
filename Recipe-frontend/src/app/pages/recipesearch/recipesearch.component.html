@@ -4,40 +4,54 @@
 <!-- <input class="border-2" type="text" [(ngModel)]="mealType" placeholder="Type of meal">
 <input class="border-2" type="text" [(ngModel)]="cuisineType" placeholder="Cuisine">
 <input class="border-2" type="text" [(ngModel)]="healthLabel" placeholder="Allergies"> -->
-<div>
-    <label for="mealType">Meal type:</label>
-    <ul>
-        @for (type of mealTypes; track type) {
-            <li>
-                <input type="checkbox" [value]="type" [checked]="selectedMealTypes.includes(type)" (change)="toggleMealType($event)"> 
-                {{ type }}
-            </li>
-        }
-    </ul>
-</div>
 
-<div>
-    <label for="cuisineType">Cuisine type:</label>
-    <ul>
-        @for (type of cuisineTypes; track type) {
-            <li>
-                <input type="checkbox" [value]="type" [checked]="selectedCuisineTypes.includes(type)" (change)="toggleCuisineType($event)"> 
-                {{ type }}
-            </li>
-        }
-    </ul>
-</div>
+<div class="relative">
+    <button id="menu-button" (click)="toggleDropdown($event)" class="inline-flex justify-center items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+        Filter recipes
+    </button>
 
-<div>
-    <label for="healthLabel">Allergies:</label>
-    <ul>
-        @for (label of healthLabels; track label) {
-            <li>
-                <input type="checkbox" [value]="label" [checked]="selectedHealthLabels.includes(label)" (change)="toggleHealthLabel($event)"> 
-                {{ label }}
-            </li>
-        }
-    </ul>
+    @if (isDropdownOpen) {
+        <div id="dropdown-menu" class="flex flex-row justify-center origin-top-right absolute rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="p-4">
+            <label for="mealType">Meal type:</label>
+            <ul>
+                @for (type of mealTypes; track type) {
+                    <li>
+                        <input type="checkbox" [value]="type" [checked]="selectedMealTypes.includes(type)" (change)="toggleMealType($event)"> 
+                        {{ type }}
+                    </li>
+                }
+            </ul>
+        </div>
+        
+        <div class="p-4">
+            <label for="cuisineType">Cuisine type:</label>
+            <ul>
+                @for (type of cuisineTypes; track type) {
+                    <li>
+                        <input type="checkbox" [value]="type" [checked]="selectedCuisineTypes.includes(type)" (change)="toggleCuisineType($event)"> 
+                        {{ type }}
+                    </li>
+                }
+            </ul>
+        </div>
+        
+        <div class="p-4">
+            <label for="healthLabel">Allergies:</label>
+            <ul>
+                @for (label of healthLabels; track label) {
+                    <li>
+                        <input type="checkbox" [value]="label" [checked]="selectedHealthLabels.includes(label)" (change)="toggleHealthLabel($event)"> 
+                        {{ label }}
+                    </li>
+                }
+            </ul>
+        </div>
+     </div>
+    } @else {
+        <p></p>
+    }
+
 </div>
 
 <button (click)="searchRecipe()">Get recipes</button>
