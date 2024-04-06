@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Recipe } from '../../interfaces/recipe';
 import { RecipeService } from '../../services/recipe.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RecipeidformatterPipe } from '../../pipes/recipeidformatter.pipe';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -28,9 +28,10 @@ export class RecipesearchComponent implements OnInit {
 
   isDropdownOpen: boolean = false;
 
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
+  constructor(private recipeService: RecipeService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    this.router.navigate(['.'], {relativeTo: this.route});
     this.route.url.subscribe(url => {
       if (url[0] !== undefined && url[0].path === 'search') {
         this.searchRecipe();
@@ -119,7 +120,6 @@ export class RecipesearchComponent implements OnInit {
   }
  
   searchRecipe() {
-    // if (!this.recipes || this.recipes.length === 0) {
       this.recipeService.getRecipes(this.searchterm, this.selectedMealTypes.join(','), this.selectedCuisineTypes.join(', '), this.selectedHealthLabels).subscribe((res: any) => {
       console.log(res);
       this.recipes = res.hits.map((item: { recipe: { label: any; image: any; ingredientLines: any; totalTime: any; mealType: any; cuisineType: any; healthLabels: any; }; _links: { self: { href: any; }; }; }) => {
@@ -136,11 +136,8 @@ export class RecipesearchComponent implements OnInit {
       });
 
       console.table(this.filteredRecipes);
-      // this.recipes = recipes;
       this.filterRecipes();
-      // this.mealTypes = this.extractMealTypes(this.recipes);
     });
-    // }
   }
   
   filterRecipes() {
