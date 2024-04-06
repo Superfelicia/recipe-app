@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { LoginDetails } from '../interfaces/login-details';
 import { Registerdetails } from '../interfaces/registerdetails';
-import { BehaviorSubject, EMPTY, Observable, catchError, throwError, map } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, catchError, throwError, map, tap } from 'rxjs';
 import { User } from '../interfaces/user';
 import { LoggedInUser } from '../interfaces/loggedinuser';
 import { RegisteredUser } from '../interfaces/registered-user';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -48,7 +49,7 @@ export class AuthService {
     })
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   registeredUserState(registeredState: RegisteredUser) {
     this.registered.next(registeredState);
@@ -76,18 +77,23 @@ export class AuthService {
     return this.loggedIn.value.loginState;
   }
 
-  loginUser(loginDetails: LoginDetails) {
-    this.http.post<any>(this.baseUrl+'login', loginDetails, this.httpOptions).pipe(
-      catchError(this.handleError)).subscribe(result => {
-        console.log(result);
+  loginUser(loginDetails: LoginDetails): Observable<any> {
+    return this.http.post<any>(this.baseUrl+'login', loginDetails, this.httpOptions).pipe(
+      catchError(this.handleError),
+      tap(result => {
+        console.log('Inlogg lyckades för user:', result.user);
         this.updateLoginState({
           user: result.user,
           loginState: true,
         });
         // om result så tar vi det, som i det här fallet är token,
         // och sparar det i localStorage
+        localStorage.setItem('token', result.token);
+        this.router.navigate(['/']);
+        
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer " + result.token);
-      });
+      })
+    );
   }
 
   logOut() {
