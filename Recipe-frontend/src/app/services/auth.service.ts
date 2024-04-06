@@ -55,17 +55,22 @@ export class AuthService {
     this.registered.next(registeredState);
   }
 
-  registerNewUser(registerDetails: Registerdetails) {
-    this.http.post<any>(this.baseUrl+'register', registerDetails, this.httpOptions).pipe(
-      catchError(this.handleError)).subscribe(result => {
-        console.log(result);
+  registerNewUser(registerDetails: Registerdetails): Observable<any> {
+    return this.http.post<any>(this.baseUrl+'register', registerDetails, this.httpOptions).pipe(
+      catchError(this.handleError),
+      tap(result => {
+        console.log('Registrering lyckades', result);
         this.registeredUserState({
           user: result.user,
           registeredState: true,
         });
 
+        localStorage.setItem('token', result.token);
+        this.router.navigate(['/']);
+
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer " + result.token);
-      });
+      })
+    );
   }
 
   updateLoginState(loginState: LoggedInUser) {
@@ -90,7 +95,7 @@ export class AuthService {
         // och sparar det i localStorage
         localStorage.setItem('token', result.token);
         this.router.navigate(['/']);
-        
+
         this.httpOptions.headers = this.httpOptions.headers.set('Authorization', "Bearer " + result.token);
       })
     );
