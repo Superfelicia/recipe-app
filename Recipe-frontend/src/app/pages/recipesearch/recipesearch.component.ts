@@ -19,7 +19,7 @@ export class RecipesearchComponent implements OnInit {
 
   searchterm: string = '';
 
-  mealTypes: string[] = ['breakfast', 'brunch', 'lunch/dinner', 'snack', 'teatime'];
+  mealTypes: string[] = ['breakfast', 'brunch', 'lunch', 'dinner', 'snack', 'teatime'];
   cuisineTypes: string[] = ["italian", "mexican", "indian", "chinese", 'british', 'greek', 'eastern europe', 'mediterranean'];
   healthLabels: string[] = ["vegetarian", "vegan", 'shellfish-free', 'dairy-free', 'gluten-free', 'pescatarian', 'peanut-free', 'egg-free'];
   selectedMealTypes: string[] = [];
@@ -120,7 +120,9 @@ export class RecipesearchComponent implements OnInit {
   }
  
   searchRecipe() {
-      this.recipeService.getRecipes(this.searchterm, this.selectedMealTypes.join(','), this.selectedCuisineTypes.join(', '), this.selectedHealthLabels).subscribe((res: any) => {
+    let searchterm: string = this.searchterm && this.searchterm.trim() !== '' ? this.searchterm.trim() : '';
+    
+    this.recipeService.getRecipes(searchterm, this.selectedMealTypes.join(','), this.selectedCuisineTypes.join(', '), this.selectedHealthLabels).subscribe((res: any) => {
       console.log(res);
       this.recipes = res.hits.map((item: { recipe: { label: any; image: any; ingredientLines: any; totalTime: any; mealType: any; cuisineType: any; healthLabels: any; }; _links: { self: { href: any; }; }; }) => {
         return {

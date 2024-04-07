@@ -26,13 +26,11 @@ export class RecipeService {
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  getRecipes(searchterm: string, mealType: string, cuisineType: string, healthLabels: string[]): Observable<any> {
-    let url = this.baseUrl + "&app_id=" + this.app_id + "&app_key=" + this.app_key;
-    
+  getRecipes(searchterm: string, mealType: string, cuisineType: string, healthLabels: string[]): Observable<any> {    
     let queryParams = '';
 
     if (searchterm) {
-      queryParams += `$q=${encodeURI(searchterm)}`;
+      queryParams += `&q=${encodeURI(searchterm)}`;
     }
     if (mealType) {
       queryParams += `&mealType=${encodeURI(mealType)}`;
@@ -45,7 +43,11 @@ export class RecipeService {
       queryParams += `&health=${encodedHealthLabels.join(',')}`;
     }
 
-    return this.http.get<any>(`${url}${queryParams}`, this.httpOptions);
+    const url = `${this.baseUrl}${queryParams}&app_id=${this.app_id}&app_key=${this.app_key}`;
+
+    return this.http.get<any>(url, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
   }
 
   getRecipe(recipeId: string): Observable<any> {

@@ -1,9 +1,8 @@
 <p>recipesearch works!</p>
 
-<input class="border-2" type="text" [ngModel]="searchterm" placeholder="Search">
-<!-- <input class="border-2" type="text" [(ngModel)]="mealType" placeholder="Type of meal">
-<input class="border-2" type="text" [(ngModel)]="cuisineType" placeholder="Cuisine">
-<input class="border-2" type="text" [(ngModel)]="healthLabel" placeholder="Allergies"> -->
+<form (ngSubmit)="searchRecipe()">
+    <input class="border-2" type="text" name="searchterm" [(ngModel)]="searchterm" placeholder="Search" required>
+</form>
 
 <div class="relative">
     <button id="menu-button" (click)="toggleDropdown($event)" class="inline-flex justify-center items-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
