@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "config": "ts-node ./scripts/setenv.ts",
+    "start": "npm run config -- --environment=dev && ng serve",
+    "build": "npm run config -- --environment=prod && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:Recipe-frontend": "node dist/recipe-frontend/server/server.mjs"
@@ -34,6 +35,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "autoprefixer": "^10.4.18",
+    "dotenv": "^16.4.5",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -42,6 +44,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.4.37",
     "tailwindcss": "^3.4.1",
-    "typescript": "~5.3.2"
+    "typescript": "~5.3.2",
+    "yargs": "^17.7.2"
   }
 }
