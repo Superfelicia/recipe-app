@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 export class RecipeService {
 
   private baseUrl = `https://api.edamam.com/api/recipes/v2?type=public`;
-  private app_id = process.env['API_ID'];
-  private app_key = process.env['API_KEY'];
+  private app_id = environment.API_ID;
+  private app_key = environment.API_KEY;
 
   private httpOptions = {
     headers: new HttpHeaders({
