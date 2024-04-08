@@ -41,7 +41,7 @@ export class AuthService {
   // - token
   // - status
 
-  private baseUrl: string = 'https://u06-fullstack-recipe-app-superfelicia.onrender.com/';
+  private baseUrl: string = 'https://u06-fullstack-recipe-app-superfelicia.onrender.com/api/';
 
   private httpOptions = {
     headers: new HttpHeaders({
