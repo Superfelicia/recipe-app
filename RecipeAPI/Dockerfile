@@ -10,4 +10,4 @@ RUN apk add --no-cache npm
 RUN npm install
 # Build Vite assets
 RUN npm run build
-CMD ["/scripts/00-laravel-deploy.sh"]
+CMD ["/start.sh"]
